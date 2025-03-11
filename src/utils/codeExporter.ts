@@ -33,7 +33,7 @@ export function generateExportableCode(params: ExportParams): string {
     bgStyle = 'linear-gradient(to bottom, #eee, #b8b8b8)';
   }
   
-  // Create the HTML/CSS/JS code for the effect
+  // Create the HTML/CSS/JS code for the effect with instructions for integration
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +51,7 @@ export function generateExportableCode(params: ExportParams): string {
       background-color: #000;
     }
     
-    #canvas-container {
+    #liquid-metal-container {
       width: 480px;
       height: 480px;
       aspect-ratio: 1;
@@ -69,13 +69,13 @@ export function generateExportableCode(params: ExportParams): string {
   </style>
 </head>
 <body>
-  <div id="canvas-container"></div>
+  <div id="liquid-metal-container"></div>
 
   <script>
     // Initialize the liquid metal effect
     document.addEventListener('DOMContentLoaded', () => {
       // Get canvas container element
-      const container = document.getElementById('canvas-container');
+      const container = document.getElementById('liquid-metal-container');
       
       // Create canvas element
       const canvas = document.createElement('canvas');
@@ -445,6 +445,31 @@ export function generateExportableCode(params: ExportParams): string {
       animate();
     });
   </script>
+
+  <!-- INTEGRATION INSTRUCTIONS -->
+  <!-- 
+  HOW TO USE THIS IN YOUR OWN PROJECT:
+  
+  1. CREATE A CONTAINER:
+     Add a div with id="liquid-metal-container" to your page:
+     <div id="liquid-metal-container"></div>
+     
+  2. ADD STYLES:
+     Copy the CSS styles for #liquid-metal-container and canvas
+     from the <style> section above to your own CSS.
+     
+  3. INCLUDE THE SCRIPT:
+     Copy everything inside the <script> tags to your JavaScript file
+     or include it in a <script> tag at the end of your HTML body.
+     
+  4. CUSTOMIZE:
+     You can change the container size, background, or any parameters
+     to match your design.
+     
+  5. CUSTOM IMAGE:
+     To use your own image, replace the loadDefaultLogo or loadUserImage
+     function with your own image loading code.
+  -->
 </body>
 </html>`;
 }
@@ -465,3 +490,4 @@ export function handleExport(params: ExportParams): void {
   // Clean up the URL object
   setTimeout(() => URL.revokeObjectURL(url), 100);
 }
+
