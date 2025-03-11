@@ -13,10 +13,11 @@ interface ExportParams {
   speed: number;
   patternScale: number;
   background: string;
+  imageDataUrl?: string;
 }
 
 export function generateExportableCode(params: ExportParams): string {
-  const { refraction, edge, patternBlur, liquid, speed, patternScale, background } = params;
+  const { refraction, edge, patternBlur, liquid, speed, patternScale, background, imageDataUrl } = params;
   
   // Create background style based on selected option
   let bgStyle;
@@ -57,14 +58,7 @@ export function generateExportableCode(params: ExportParams): string {
       border-radius: 1.5rem;
       overflow: hidden;
       background: ${bgStyle};
-      ${background === 'transparent' ? `
-      background-image: linear-gradient(45deg, #808080 25%, transparent 25%), 
-                        linear-gradient(-45deg, #808080 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, #808080 75%), 
-                        linear-gradient(-45deg, transparent 75%, #808080 75%);
-      background-size: 10px 10px;
-      background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
-      background-color: #b0b0b0;` : ''}
+      ${background === 'transparent' ? '' : ''}
     }
     
     canvas {
@@ -192,6 +186,19 @@ export function generateExportableCode(params: ExportParams): string {
         patternScale: ${patternScale}
       };
       
+      ${imageDataUrl ? `
+      // Load user's uploaded image
+      loadUserImage();
+      
+      function loadUserImage() {
+        const img = new Image();
+        img.onload = function() {
+          processLogoImage(img).then(processedImageData => {
+            updateTexture(processedImageData);
+          });
+        };
+        img.src = "${imageDataUrl}";
+      }` : `
       // Load example SVG logo
       loadDefaultLogo();
       
@@ -213,7 +220,7 @@ export function generateExportableCode(params: ExportParams): string {
           });
         };
         img.src = url;
-      }
+      }`}
       
       // Process logo image to create distance field
       function processLogoImage(img) {

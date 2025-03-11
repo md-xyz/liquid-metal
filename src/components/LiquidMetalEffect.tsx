@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { toast } from "sonner";
 import { createShader, createProgram } from '../utils/webglUtils';
@@ -26,6 +27,7 @@ const LiquidMetalEffect: React.FC = () => {
   const uniformLocationsRef = useRef<Record<string, WebGLUniformLocation | null>>({});
   const startTimeRef = useRef<number>(performance.now());
   const currentTimeRef = useRef<number>(0);
+  const currentImageDataUrlRef = useRef<string | undefined>(undefined);
 
   const [params, setParams] = useState<EffectParams>({
     refraction: 0.015,
@@ -225,6 +227,9 @@ const LiquidMetalEffect: React.FC = () => {
       const dataUrl = e.target?.result as string;
       if (!dataUrl) return;
       
+      // Store the data URL for export
+      currentImageDataUrlRef.current = dataUrl;
+      
       const img = new Image();
       
       img.onload = function() {
@@ -255,7 +260,11 @@ const LiquidMetalEffect: React.FC = () => {
 
   const handleExportClick = () => {
     try {
-      handleExport(params);
+      const exportParams = {
+        ...params,
+        imageDataUrl: currentImageDataUrlRef.current
+      };
+      handleExport(exportParams);
       toast.success('Code exported successfully!');
     } catch (error) {
       console.error('Export error:', error);
@@ -401,4 +410,3 @@ const LiquidMetalEffect: React.FC = () => {
 };
 
 export default LiquidMetalEffect;
-
