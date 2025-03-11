@@ -186,6 +186,8 @@ const LiquidMetalEffect: React.FC = () => {
       canvasContainerRef.current.style.background = 'white';
     } else if (params.background === 'black') {
       canvasContainerRef.current.style.background = 'black';
+    } else if (params.background === 'transparent') {
+      canvasContainerRef.current.style.background = 'transparent';
     }
   };
 
@@ -311,6 +313,11 @@ const LiquidMetalEffect: React.FC = () => {
                   className={`background-option background-black ${params.background === 'black' ? 'active' : ''}`}
                   onClick={() => handleParamChange('background', 'black')}
                   title="Black"
+                />
+                <button 
+                  className={`background-option background-transparent ${params.background === 'transparent' ? 'active' : ''}`}
+                  onClick={() => handleParamChange('background', 'transparent')}
+                  title="Transparent"
                 />
               </div>
             </div>

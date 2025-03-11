@@ -18,6 +18,20 @@ interface ExportParams {
 export function generateExportableCode(params: ExportParams): string {
   const { refraction, edge, patternBlur, liquid, speed, patternScale, background } = params;
   
+  // Create background style based on selected option
+  let bgStyle;
+  if (background === 'metal') {
+    bgStyle = 'linear-gradient(to bottom, #eee, #b8b8b8)';
+  } else if (background === 'white') {
+    bgStyle = 'white';
+  } else if (background === 'black') {
+    bgStyle = 'black';
+  } else if (background === 'transparent') {
+    bgStyle = 'transparent';
+  } else {
+    bgStyle = 'linear-gradient(to bottom, #eee, #b8b8b8)';
+  }
+  
   // Create the HTML/CSS/JS code for the effect
   return `<!DOCTYPE html>
 <html lang="en">
@@ -42,11 +56,15 @@ export function generateExportableCode(params: ExportParams): string {
       aspect-ratio: 1;
       border-radius: 1.5rem;
       overflow: hidden;
-      background: ${background === 'metal' 
-        ? 'linear-gradient(to bottom, #eee, #b8b8b8)' 
-        : background === 'white' 
-          ? 'white' 
-          : 'black'};
+      background: ${bgStyle};
+      ${background === 'transparent' ? `
+      background-image: linear-gradient(45deg, #808080 25%, transparent 25%), 
+                        linear-gradient(-45deg, #808080 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #808080 75%), 
+                        linear-gradient(-45deg, transparent 75%, #808080 75%);
+      background-size: 10px 10px;
+      background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+      background-color: #b0b0b0;` : ''}
     }
     
     canvas {
