@@ -258,6 +258,29 @@ const LiquidMetalEffect: React.FC = () => {
     }));
   };
 
+  const handleInputChange = (name: keyof Omit<EffectParams, 'background'>, value: string) => {
+    const numValue = parseFloat(value);
+    
+    // Define min and max ranges for each parameter
+    const ranges = {
+      refraction: { min: 0, max: 0.06 },
+      edge: { min: 0, max: 1 },
+      patternBlur: { min: 0, max: 0.05 },
+      liquid: { min: 0, max: 1 },
+      speed: { min: 0, max: 1 },
+      patternScale: { min: 1, max: 10 }
+    };
+    
+    // Validate the input is a valid number
+    if (!isNaN(numValue)) {
+      // Clamp the value to the valid range
+      const range = ranges[name];
+      const clampedValue = Math.max(range.min, Math.min(range.max, numValue));
+      
+      handleParamChange(name, clampedValue);
+    }
+  };
+
   const handleExportClick = () => {
     try {
       const exportParams = {
@@ -332,75 +355,129 @@ const LiquidMetalEffect: React.FC = () => {
             </div>
             
             <div className="slider-container">
-              <span className="parameter-name">Refraction <span className="parameter-value">{params.refraction}</span></span>
-              <input 
-                type="range" 
-                min="0" 
-                max="0.06" 
-                step="0.001" 
-                value={params.refraction}
-                onChange={(e) => handleParamChange('refraction', parseFloat(e.target.value))}
-              />
+              <span className="parameter-name">Refraction</span>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="0.06" 
+                  step="0.001" 
+                  value={params.refraction}
+                  onChange={(e) => handleParamChange('refraction', parseFloat(e.target.value))}
+                  className="flex-grow"
+                />
+                <input
+                  type="text"
+                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  value={params.refraction}
+                  onChange={(e) => handleInputChange('refraction', e.target.value)}
+                />
+              </div>
             </div>
             
             <div className="slider-container">
-              <span className="parameter-name">Edge <span className="parameter-value">{params.edge}</span></span>
-              <input 
-                type="range" 
-                min="0" 
-                max="1" 
-                step="0.01" 
-                value={params.edge}
-                onChange={(e) => handleParamChange('edge', parseFloat(e.target.value))}
-              />
+              <span className="parameter-name">Edge</span>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="1" 
+                  step="0.01" 
+                  value={params.edge}
+                  onChange={(e) => handleParamChange('edge', parseFloat(e.target.value))}
+                  className="flex-grow"
+                />
+                <input
+                  type="text"
+                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  value={params.edge}
+                  onChange={(e) => handleInputChange('edge', e.target.value)}
+                />
+              </div>
             </div>
             
             <div className="slider-container">
-              <span className="parameter-name">Pattern Blur <span className="parameter-value">{params.patternBlur}</span></span>
-              <input 
-                type="range" 
-                min="0" 
-                max="0.05" 
-                step="0.001" 
-                value={params.patternBlur}
-                onChange={(e) => handleParamChange('patternBlur', parseFloat(e.target.value))}
-              />
+              <span className="parameter-name">Pattern Blur</span>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="0.05" 
+                  step="0.001" 
+                  value={params.patternBlur}
+                  onChange={(e) => handleParamChange('patternBlur', parseFloat(e.target.value))}
+                  className="flex-grow"
+                />
+                <input
+                  type="text"
+                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  value={params.patternBlur}
+                  onChange={(e) => handleInputChange('patternBlur', e.target.value)}
+                />
+              </div>
             </div>
             
             <div className="slider-container">
-              <span className="parameter-name">Liquid <span className="parameter-value">{params.liquid}</span></span>
-              <input 
-                type="range" 
-                min="0" 
-                max="1" 
-                step="0.01" 
-                value={params.liquid}
-                onChange={(e) => handleParamChange('liquid', parseFloat(e.target.value))}
-              />
+              <span className="parameter-name">Liquid</span>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="1" 
+                  step="0.01" 
+                  value={params.liquid}
+                  onChange={(e) => handleParamChange('liquid', parseFloat(e.target.value))}
+                  className="flex-grow"
+                />
+                <input
+                  type="text"
+                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  value={params.liquid}
+                  onChange={(e) => handleInputChange('liquid', e.target.value)}
+                />
+              </div>
             </div>
             
             <div className="slider-container">
-              <span className="parameter-name">Speed <span className="parameter-value">{params.speed}</span></span>
-              <input 
-                type="range" 
-                min="0" 
-                max="1" 
-                step="0.01" 
-                value={params.speed}
-                onChange={(e) => handleParamChange('speed', parseFloat(e.target.value))}
-              />
+              <span className="parameter-name">Speed</span>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="1" 
+                  step="0.01" 
+                  value={params.speed}
+                  onChange={(e) => handleParamChange('speed', parseFloat(e.target.value))}
+                  className="flex-grow"
+                />
+                <input
+                  type="text"
+                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  value={params.speed}
+                  onChange={(e) => handleInputChange('speed', e.target.value)}
+                />
+              </div>
             </div>
             
             <div className="slider-container">
-              <span className="parameter-name">Pattern Scale <span className="parameter-value">{params.patternScale}</span></span>
-              <input 
-                type="range" 
-                min="1" 
-                max="10" 
-                step="0.1" 
-                value={params.patternScale}
-                onChange={(e) => handleParamChange('patternScale', parseFloat(e.target.value))}
-              />
+              <span className="parameter-name">Pattern Scale</span>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="range" 
+                  min="1" 
+                  max="10" 
+                  step="0.1" 
+                  value={params.patternScale}
+                  onChange={(e) => handleParamChange('patternScale', parseFloat(e.target.value))}
+                  className="flex-grow"
+                />
+                <input
+                  type="text"
+                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  value={params.patternScale}
+                  onChange={(e) => handleInputChange('patternScale', e.target.value)}
+                />
+              </div>
             </div>
           </div>
         </div>
