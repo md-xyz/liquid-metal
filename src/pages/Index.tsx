@@ -11,7 +11,7 @@ const Index = () => {
           <a
             href="https://liquid.paper.design/"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow"
             className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
           >
             Paper Design
