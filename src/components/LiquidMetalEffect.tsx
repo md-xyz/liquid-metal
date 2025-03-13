@@ -60,26 +60,26 @@ const LiquidMetalEffect: React.FC = () => {
       const vertexShader = createShader(gl, vertexShaderSource, gl.VERTEX_SHADER);
       const fragShader = createShader(gl, fragmentShaderSource, gl.FRAGMENT_SHADER);
       const program = createProgram(gl, vertexShader, fragShader);
-      
+
       gl.useProgram(program);
       programRef.current = program;
-      
+
       const vertexBuffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-      
+
       const positions = new Float32Array([
         -1, -1,  // bottom left
-         1, -1,  // bottom right
-        -1,  1,  // top left
-         1,  1   // top right
+        1, -1,  // bottom right
+        -1, 1,  // top left
+        1, 1   // top right
       ]);
-      
+
       gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
-      
+
       const positionAttribLocation = gl.getAttribLocation(program, 'a_position');
       gl.enableVertexAttribArray(positionAttribLocation);
       gl.vertexAttribPointer(positionAttribLocation, 2, gl.FLOAT, false, 0, 0);
-      
+
       uniformLocationsRef.current = {
         u_image_texture: gl.getUniformLocation(program, 'u_image_texture'),
         u_time: gl.getUniformLocation(program, 'u_time'),
@@ -92,29 +92,29 @@ const LiquidMetalEffect: React.FC = () => {
         u_liquid: gl.getUniformLocation(program, 'u_liquid'),
         u_metalType: gl.getUniformLocation(program, 'u_metalType')
       };
-      
+
       const texture = gl.createTexture();
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, texture);
-      
+
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      
+
       const defaultPixel = new Uint8Array([255, 255, 255, 255]);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, defaultPixel);
-      
+
       textureRef.current = texture;
-      
+
       loadDefaultLogo().then(img => {
         processLogoImage(img).then(processedImageData => {
           updateTexture(processedImageData);
         });
       });
-      
+
       startAnimation();
-      
+
       updateUniforms();
     } catch (error) {
       console.error("WebGL initialization error:", error);
@@ -141,7 +141,7 @@ const LiquidMetalEffect: React.FC = () => {
       if (canvasRef.current) {
         canvasRef.current.width = canvasRef.current.clientWidth * window.devicePixelRatio;
         canvasRef.current.height = canvasRef.current.clientHeight * window.devicePixelRatio;
-        
+
         if (glRef.current) {
           glRef.current.viewport(0, 0, canvasRef.current.width, canvasRef.current.height);
           updateUniforms();
@@ -163,7 +163,7 @@ const LiquidMetalEffect: React.FC = () => {
 
     gl.bindTexture(gl.TEXTURE_2D, textureRef.current);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, imageData.width, imageData.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, imageData.data);
-    
+
     const imgRatio = imageData.width / imageData.height;
     gl.uniform1f(uniformLocationsRef.current.u_img_ratio || 0, imgRatio);
   };
@@ -179,7 +179,7 @@ const LiquidMetalEffect: React.FC = () => {
     gl.uniform1f(uniformLocationsRef.current.u_patternBlur || 0, params.patternBlur);
     gl.uniform1f(uniformLocationsRef.current.u_liquid || 0, params.liquid);
     gl.uniform1i(uniformLocationsRef.current.u_image_texture || 0, 0);
-    
+
     if (params.metalType === 'dark') {
       gl.uniform1f(uniformLocationsRef.current.u_metalType || 0, 1.0);
     } else if (params.metalType === 'gold') {
@@ -191,7 +191,7 @@ const LiquidMetalEffect: React.FC = () => {
 
   const updateBackground = () => {
     if (!canvasContainerRef.current) return;
-    
+
     if (params.background === 'metal') {
       if (params.metalType === 'dark') {
         canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #333, #111)';
@@ -217,37 +217,37 @@ const LiquidMetalEffect: React.FC = () => {
       const now = performance.now();
       const deltaTime = now - startTimeRef.current;
       startTimeRef.current = now;
-      
+
       currentTimeRef.current += deltaTime * params.speed;
-      
+
       gl.uniform1f(uniformLocationsRef.current.u_time || 0, currentTimeRef.current);
-      
+
       gl.viewport(0, 0, canvasRef.current.width, canvasRef.current.height);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      
+
       animationRef.current = requestAnimationFrame(animate);
     };
-    
+
     animationRef.current = requestAnimationFrame(animate);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
-    
-    reader.onload = function(e) {
+
+    reader.onload = function (e) {
       const dataUrl = e.target?.result as string;
       if (!dataUrl) return;
-      
+
       currentImageDataUrlRef.current = dataUrl;
-      
+
       const img = new Image();
-      
-      img.onload = function() {
+
+      img.onload = function () {
         toast.promise(
           processLogoImage(img).then(processedImageData => {
             updateTexture(processedImageData);
@@ -259,10 +259,10 @@ const LiquidMetalEffect: React.FC = () => {
           }
         );
       };
-      
+
       img.src = dataUrl;
     };
-    
+
     reader.readAsDataURL(file);
   };
 
@@ -275,7 +275,7 @@ const LiquidMetalEffect: React.FC = () => {
 
   const handleInputChange = (name: keyof Omit<EffectParams, 'background'>, value: string) => {
     const numValue = parseFloat(value);
-    
+
     const ranges = {
       refraction: { min: 0, max: 0.06 },
       edge: { min: 0, max: 1 },
@@ -284,11 +284,11 @@ const LiquidMetalEffect: React.FC = () => {
       speed: { min: 0, max: 1 },
       patternScale: { min: 1, max: 10 }
     };
-    
+
     if (!isNaN(numValue)) {
       const range = ranges[name];
       const clampedValue = Math.max(range.min, Math.min(range.max, numValue));
-      
+
       handleParamChange(name, clampedValue);
     }
   };
@@ -310,91 +310,91 @@ const LiquidMetalEffect: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start p-4 relative overflow-y-auto">
       <div className="absolute inset-0 w-full h-full bg-black z-[-1]"></div>
-      
+
       <div className="fade-in w-full max-w-5xl flex flex-col items-center z-10">
         <div className="mb-8 text-center">
           <h1 className="header-title">Liquid Metal Effect</h1>
-          <p className="header-subtitle">Transform your logos and shapes with stunning liquid metal effects</p>
+          <p className="header-subtitle max-w-3xl">Transform your logos and shapes with stunning liquid metal effect. Transparent or white background is required. Shapes work better than words. Use an SVG or a high-resolution image.</p>
         </div>
-        
+
         <div className="w-full flex flex-col md:flex-row gap-8 items-center justify-center">
           <div ref={canvasContainerRef} className="canvas-container shadow-xl"></div>
-          
+
           <div className="w-full md:w-72 space-y-6 bg-black/50 backdrop-blur-xl p-6 rounded-xl border border-white/10">
             <div className="flex flex-col gap-3">
               <label className="upload-btn w-full flex items-center justify-center" onClick={() => fileInputRef.current?.click()}>
                 Upload Logo
               </label>
-              <button 
+              <button
                 className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors flex items-center justify-center"
                 onClick={handleExportClick}
               >
                 Export Code
               </button>
-              <input 
+              <input
                 ref={fileInputRef}
-                type="file" 
+                type="file"
                 accept=".svg,.png,.jpg,.jpeg"
                 onChange={handleFileChange}
                 className="hidden"
               />
             </div>
-            
+
             <div>
               <span className="text-sm opacity-80 font-medium">Metal Type</span>
               <div className="flex gap-3 mt-2">
-                <button 
+                <button
                   className={`background-option background-silver ${params.metalType === 'silver' ? 'active' : ''}`}
                   onClick={() => handleParamChange('metalType', 'silver')}
                   title="Silver Metal"
                 />
-                <button 
+                <button
                   className={`background-option background-dark-metal ${params.metalType === 'dark' ? 'active' : ''}`}
                   onClick={() => handleParamChange('metalType', 'dark')}
                   title="Dark Metal"
                 />
-                <button 
+                <button
                   className={`background-option background-gold ${params.metalType === 'gold' ? 'active' : ''}`}
                   onClick={() => handleParamChange('metalType', 'gold')}
                   title="Gold Metal"
                 />
               </div>
             </div>
-            
+
             <div>
               <span className="text-sm opacity-80 font-medium">Background</span>
               <div className="flex gap-3 mt-2">
-                <button 
+                <button
                   className={`background-option background-metal ${params.background === 'metal' ? 'active' : ''}`}
                   onClick={() => handleParamChange('background', 'metal')}
                   title="Metal"
                 />
-                <button 
+                <button
                   className={`background-option background-white ${params.background === 'white' ? 'active' : ''}`}
                   onClick={() => handleParamChange('background', 'white')}
                   title="White"
                 />
-                <button 
+                <button
                   className={`background-option background-black ${params.background === 'black' ? 'active' : ''}`}
                   onClick={() => handleParamChange('background', 'black')}
                   title="Black"
                 />
-                <button 
+                <button
                   className={`background-option background-transparent ${params.background === 'transparent' ? 'active' : ''}`}
                   onClick={() => handleParamChange('background', 'transparent')}
                   title="Transparent"
                 />
               </div>
             </div>
-            
+
             <div className="slider-container">
               <span className="parameter-name">Refraction</span>
               <div className="flex gap-2 items-center">
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="0.06" 
-                  step="0.001" 
+                <input
+                  type="range"
+                  min="0"
+                  max="0.06"
+                  step="0.001"
                   value={params.refraction}
                   onChange={(e) => handleParamChange('refraction', parseFloat(e.target.value))}
                   className="flex-grow"
@@ -407,15 +407,15 @@ const LiquidMetalEffect: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <div className="slider-container">
               <span className="parameter-name">Edge</span>
               <div className="flex gap-2 items-center">
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="1" 
-                  step="0.01" 
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
                   value={params.edge}
                   onChange={(e) => handleParamChange('edge', parseFloat(e.target.value))}
                   className="flex-grow"
@@ -428,15 +428,15 @@ const LiquidMetalEffect: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <div className="slider-container">
               <span className="parameter-name">Pattern Blur</span>
               <div className="flex gap-2 items-center">
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="0.05" 
-                  step="0.001" 
+                <input
+                  type="range"
+                  min="0"
+                  max="0.05"
+                  step="0.001"
                   value={params.patternBlur}
                   onChange={(e) => handleParamChange('patternBlur', parseFloat(e.target.value))}
                   className="flex-grow"
@@ -449,15 +449,15 @@ const LiquidMetalEffect: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <div className="slider-container">
               <span className="parameter-name">Liquid</span>
               <div className="flex gap-2 items-center">
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="1" 
-                  step="0.01" 
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
                   value={params.liquid}
                   onChange={(e) => handleParamChange('liquid', parseFloat(e.target.value))}
                   className="flex-grow"
@@ -470,15 +470,15 @@ const LiquidMetalEffect: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <div className="slider-container">
               <span className="parameter-name">Speed</span>
               <div className="flex gap-2 items-center">
-                <input 
-                  type="range" 
-                  min="0" 
-                  max="1" 
-                  step="0.01" 
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
                   value={params.speed}
                   onChange={(e) => handleParamChange('speed', parseFloat(e.target.value))}
                   className="flex-grow"
@@ -491,15 +491,15 @@ const LiquidMetalEffect: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <div className="slider-container">
               <span className="parameter-name">Pattern Scale</span>
               <div className="flex gap-2 items-center">
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="10" 
-                  step="0.1" 
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="0.1"
                   value={params.patternScale}
                   onChange={(e) => handleParamChange('patternScale', parseFloat(e.target.value))}
                   className="flex-grow"
