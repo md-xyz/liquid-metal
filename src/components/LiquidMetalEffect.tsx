@@ -179,7 +179,14 @@ const LiquidMetalEffect: React.FC = () => {
     gl.uniform1f(uniformLocationsRef.current.u_patternBlur || 0, params.patternBlur);
     gl.uniform1f(uniformLocationsRef.current.u_liquid || 0, params.liquid);
     gl.uniform1i(uniformLocationsRef.current.u_image_texture || 0, 0);
-    gl.uniform1f(uniformLocationsRef.current.u_metalType || 0, params.metalType === 'dark' ? 1.0 : 0.0);
+    
+    if (params.metalType === 'dark') {
+      gl.uniform1f(uniformLocationsRef.current.u_metalType || 0, 1.0);
+    } else if (params.metalType === 'gold') {
+      gl.uniform1f(uniformLocationsRef.current.u_metalType || 0, 2.0);
+    } else {
+      gl.uniform1f(uniformLocationsRef.current.u_metalType || 0, 0.0);
+    }
   };
 
   const updateBackground = () => {
@@ -188,6 +195,8 @@ const LiquidMetalEffect: React.FC = () => {
     if (params.background === 'metal') {
       if (params.metalType === 'dark') {
         canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #333, #111)';
+      } else if (params.metalType === 'gold') {
+        canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #FEC6A1, #F97316)';
       } else {
         canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #eee, #b8b8b8)';
       }
@@ -343,6 +352,11 @@ const LiquidMetalEffect: React.FC = () => {
                   className={`background-option background-dark-metal ${params.metalType === 'dark' ? 'active' : ''}`}
                   onClick={() => handleParamChange('metalType', 'dark')}
                   title="Dark Metal"
+                />
+                <button 
+                  className={`background-option background-gold ${params.metalType === 'gold' ? 'active' : ''}`}
+                  onClick={() => handleParamChange('metalType', 'gold')}
+                  title="Gold Metal"
                 />
               </div>
             </div>
@@ -506,3 +520,4 @@ const LiquidMetalEffect: React.FC = () => {
 };
 
 export default LiquidMetalEffect;
+

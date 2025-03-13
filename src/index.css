@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -152,6 +151,10 @@
 
 .background-dark-metal {
   background: linear-gradient(to bottom, #333, #111);
+}
+
+.background-gold {
+  background: linear-gradient(to bottom, #FEC6A1, #F97316);
 }
 
 .background-white {

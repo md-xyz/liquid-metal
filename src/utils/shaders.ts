@@ -133,12 +133,16 @@ export const fragmentShaderSource = `#version 300 es
       vec3 color1;
       vec3 color2;
       
-      if (u_metalType > 0.5) {
-          // Dark metal
+      if (u_metalType > 1.5) {
+          // Gold metal (u_metalType == 2.0)
+          color1 = vec3(0.98, 0.85, 0.5);
+          color2 = vec3(0.85, 0.6, 0.2);
+      } else if (u_metalType > 0.5) {
+          // Dark metal (u_metalType == 1.0)
           color1 = vec3(0.3, 0.3, 0.35);
           color2 = vec3(0.05, 0.05, 0.08 + 0.05 * smoothstep(0.7, 1.3, uv.x + uv.y));
       } else {
-          // Silver metal
+          // Silver metal (u_metalType == 0.0)
           color1 = vec3(0.98, 0.98, 1.0);
           color2 = vec3(0.1, 0.1, 0.1 + 0.1 * smoothstep(0.7, 1.3, uv.x + uv.y));
       }
