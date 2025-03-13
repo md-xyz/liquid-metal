@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -143,6 +144,14 @@
 
 .background-metal {
   background: linear-gradient(to bottom, #eee, #b8b8b8);
+}
+
+.background-silver {
+  background: linear-gradient(to bottom, #eee, #b8b8b8);
+}
+
+.background-dark-metal {
+  background: linear-gradient(to bottom, #333, #111);
 }
 
 .background-white {

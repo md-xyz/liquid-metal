@@ -28,6 +28,7 @@ export const fragmentShaderSource = `#version 300 es
   uniform float u_edge;
   uniform float u_patternBlur;
   uniform float u_liquid;
+  uniform float u_metalType;
 
 
   #define TWO_PI 6.28318530718
@@ -128,8 +129,19 @@ export const fragmentShaderSource = `#version 300 es
       vec3 color = vec3(0.);
       float opacity = 1.;
 
-      vec3 color1 = vec3(.98, 0.98, 1.);
-      vec3 color2 = vec3(.1, .1, .1 + .1 * smoothstep(.7, 1.3, uv.x + uv.y));
+      // Choose colors based on metal type
+      vec3 color1;
+      vec3 color2;
+      
+      if (u_metalType > 0.5) {
+          // Dark metal
+          color1 = vec3(0.3, 0.3, 0.35);
+          color2 = vec3(0.05, 0.05, 0.08 + 0.05 * smoothstep(0.7, 1.3, uv.x + uv.y));
+      } else {
+          // Silver metal
+          color1 = vec3(0.98, 0.98, 1.0);
+          color2 = vec3(0.1, 0.1, 0.1 + 0.1 * smoothstep(0.7, 1.3, uv.x + uv.y));
+      }
 
       float edge = img.r;
 

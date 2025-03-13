@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState } from 'react';
 import { toast } from "sonner";
 import { createShader, createProgram } from '../utils/webglUtils';
@@ -13,6 +14,7 @@ interface EffectParams {
   speed: number;
   patternScale: number;
   background: string;
+  metalType: string;
 }
 
 const LiquidMetalEffect: React.FC = () => {
@@ -35,7 +37,8 @@ const LiquidMetalEffect: React.FC = () => {
     liquid: 0.07,
     speed: 0.3,
     patternScale: 2,
-    background: 'metal'
+    background: 'metal',
+    metalType: 'silver'
   });
 
   useEffect(() => {
@@ -176,13 +179,20 @@ const LiquidMetalEffect: React.FC = () => {
     gl.uniform1f(uniformLocationsRef.current.u_patternBlur || 0, params.patternBlur);
     gl.uniform1f(uniformLocationsRef.current.u_liquid || 0, params.liquid);
     gl.uniform1i(uniformLocationsRef.current.u_image_texture || 0, 0);
+    // Pass metal type to shader (1 for dark metal, 0 for silver)
+    gl.uniform1f(uniformLocationsRef.current.u_metalType || 0, params.metalType === 'dark' ? 1.0 : 0.0);
   };
 
   const updateBackground = () => {
     if (!canvasContainerRef.current) return;
     
     if (params.background === 'metal') {
-      canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #eee, #b8b8b8)';
+      // Choose background gradient based on metal type
+      if (params.metalType === 'dark') {
+        canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #333, #111)';
+      } else {
+        canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #eee, #b8b8b8)';
+      }
     } else if (params.background === 'white') {
       canvasContainerRef.current.style.background = 'white';
     } else if (params.background === 'black') {
@@ -325,6 +335,22 @@ const LiquidMetalEffect: React.FC = () => {
                 onChange={handleFileChange}
                 className="hidden"
               />
+            </div>
+            
+            <div>
+              <span className="text-sm opacity-80 font-medium">Metal Type</span>
+              <div className="flex gap-3 mt-2">
+                <button 
+                  className={`background-option background-silver ${params.metalType === 'silver' ? 'active' : ''}`}
+                  onClick={() => handleParamChange('metalType', 'silver')}
+                  title="Silver Metal"
+                />
+                <button 
+                  className={`background-option background-dark-metal ${params.metalType === 'dark' ? 'active' : ''}`}
+                  onClick={() => handleParamChange('metalType', 'dark')}
+                  title="Dark Metal"
+                />
+              </div>
             </div>
             
             <div>
@@ -486,4 +512,3 @@ const LiquidMetalEffect: React.FC = () => {
 };
 
 export default LiquidMetalEffect;
-
