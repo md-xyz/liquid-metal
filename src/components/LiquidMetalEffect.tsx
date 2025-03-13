@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { toast } from "sonner";
 import { createShader, createProgram } from '../utils/webglUtils';
@@ -296,7 +295,7 @@ const LiquidMetalEffect: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-start p-4 relative overflow-y-auto">
       <div className="absolute inset-0 w-full h-full bg-black z-[-1]"></div>
       
       <div className="fade-in w-full max-w-5xl flex flex-col items-center z-10">
@@ -487,3 +486,4 @@ const LiquidMetalEffect: React.FC = () => {
 };
 
 export default LiquidMetalEffect;
+

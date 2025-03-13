@@ -72,7 +72,14 @@
   }
 
   body {
-    @apply bg-black text-white m-0 overflow-hidden font-sans;
+    @apply bg-black text-white m-0 font-sans;
+    /* Remove overflow-hidden to allow scrolling */
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  html {
+    @apply h-full;
   }
 }
 
@@ -90,13 +97,23 @@
 }
 
 .canvas-container {
-  width: 480px;
+  width: 100%;
+  max-width: 480px;
   height: 480px;
   aspect-ratio: 1;
   border-radius: 1.5rem;
   overflow: hidden;
   position: relative;
   transition: background 0.3s ease;
+}
+
+/* Make canvas responsive on mobile */
+@media (max-width: 640px) {
+  .canvas-container {
+    height: auto;
+    aspect-ratio: 1;
+    max-height: 70vh;
+  }
 }
 
 .canvas-container canvas {
