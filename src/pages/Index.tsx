@@ -8,19 +8,33 @@ const Index = () => {
       <div className="w-full max-w-5xl mx-auto py-4 px-4 text-center">
         <p className="text-gray-400 text-sm mb-2">
           Modified from{' '}
-          <a 
-            href="https://liquid.paper.design/" 
-            target="_blank" 
+          <a
+            href="https://liquid.paper.design/"
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
           >
-            Paper Design 
+            Paper Design
             <ExternalLink className="h-3 w-3 ml-1" />
           </a>
           {' '}implementation
         </p>
       </div>
       <LiquidMetalEffect />
+      <footer className="w-full max-w-5xl mx-auto py-4 px-4 text-center">
+        <p className="text-gray-400 text-sm mb-2">
+          Recreated by{' '}
+          <a
+            href="https://mkdv.me/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
+          >
+            md
+            <ExternalLink className="h-3 w-3 ml-1" />
+          </a>
+        </p>
+      </footer>
     </div>
   );
 };
