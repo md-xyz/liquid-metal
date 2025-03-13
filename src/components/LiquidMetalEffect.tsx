@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { toast } from "sonner";
 import { createShader, createProgram } from '../utils/webglUtils';
@@ -90,7 +89,8 @@ const LiquidMetalEffect: React.FC = () => {
         u_refraction: gl.getUniformLocation(program, 'u_refraction'),
         u_edge: gl.getUniformLocation(program, 'u_edge'),
         u_patternBlur: gl.getUniformLocation(program, 'u_patternBlur'),
-        u_liquid: gl.getUniformLocation(program, 'u_liquid')
+        u_liquid: gl.getUniformLocation(program, 'u_liquid'),
+        u_metalType: gl.getUniformLocation(program, 'u_metalType')
       };
       
       const texture = gl.createTexture();
@@ -179,7 +179,6 @@ const LiquidMetalEffect: React.FC = () => {
     gl.uniform1f(uniformLocationsRef.current.u_patternBlur || 0, params.patternBlur);
     gl.uniform1f(uniformLocationsRef.current.u_liquid || 0, params.liquid);
     gl.uniform1i(uniformLocationsRef.current.u_image_texture || 0, 0);
-    // Pass metal type to shader (1 for dark metal, 0 for silver)
     gl.uniform1f(uniformLocationsRef.current.u_metalType || 0, params.metalType === 'dark' ? 1.0 : 0.0);
   };
 
@@ -187,7 +186,6 @@ const LiquidMetalEffect: React.FC = () => {
     if (!canvasContainerRef.current) return;
     
     if (params.background === 'metal') {
-      // Choose background gradient based on metal type
       if (params.metalType === 'dark') {
         canvasContainerRef.current.style.background = 'linear-gradient(to bottom, #333, #111)';
       } else {
@@ -236,7 +234,6 @@ const LiquidMetalEffect: React.FC = () => {
       const dataUrl = e.target?.result as string;
       if (!dataUrl) return;
       
-      // Store the data URL for export
       currentImageDataUrlRef.current = dataUrl;
       
       const img = new Image();
@@ -270,7 +267,6 @@ const LiquidMetalEffect: React.FC = () => {
   const handleInputChange = (name: keyof Omit<EffectParams, 'background'>, value: string) => {
     const numValue = parseFloat(value);
     
-    // Define min and max ranges for each parameter
     const ranges = {
       refraction: { min: 0, max: 0.06 },
       edge: { min: 0, max: 1 },
@@ -280,9 +276,7 @@ const LiquidMetalEffect: React.FC = () => {
       patternScale: { min: 1, max: 10 }
     };
     
-    // Validate the input is a valid number
     if (!isNaN(numValue)) {
-      // Clamp the value to the valid range
       const range = ranges[name];
       const clampedValue = Math.max(range.min, Math.min(range.max, numValue));
       
