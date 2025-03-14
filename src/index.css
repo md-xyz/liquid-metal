@@ -180,11 +180,12 @@
 }
 
 .slider-container input[type="range"] {
-  @apply appearance-none w-full h-1.5 rounded-full bg-gray-700 outline-none cursor-pointer;
+  @apply appearance-none w-full h-3 rounded-full bg-gray-700 outline-none cursor-pointer;
+  touch-action: none;
 }
 
 .slider-container input[type="range"]::-webkit-slider-thumb {
-  @apply appearance-none w-3.5 h-3.5 rounded-full bg-white cursor-pointer transition-all;
+  @apply appearance-none w-5 h-5 rounded-full bg-white cursor-pointer transition-all;
 }
 
 .slider-container input[type="range"]::-webkit-slider-thumb:hover {
@@ -196,7 +197,7 @@
 }
 
 .slider-container .parameter-name {
-  @apply text-sm opacity-80 font-medium;
+  @apply text-base opacity-80 font-medium;
 }
 
 .slider-container .parameter-value {

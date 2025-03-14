@@ -397,13 +397,16 @@ const LiquidMetalEffect: React.FC = () => {
                   step="0.001"
                   value={params.refraction}
                   onChange={(e) => handleParamChange('refraction', parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
                   className="flex-grow"
                 />
                 <input
                   type="text"
-                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  className="w-20 text-base bg-gray-800 border border-gray-700 rounded px-2 py-2 text-white"
                   value={params.refraction}
                   onChange={(e) => handleInputChange('refraction', e.target.value)}
+                  inputMode="decimal"
                 />
               </div>
             </div>
@@ -418,13 +421,16 @@ const LiquidMetalEffect: React.FC = () => {
                   step="0.01"
                   value={params.edge}
                   onChange={(e) => handleParamChange('edge', parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
                   className="flex-grow"
                 />
                 <input
                   type="text"
-                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  className="w-20 text-base bg-gray-800 border border-gray-700 rounded px-2 py-2 text-white"
                   value={params.edge}
                   onChange={(e) => handleInputChange('edge', e.target.value)}
+                  inputMode="decimal"
                 />
               </div>
             </div>
@@ -439,13 +445,16 @@ const LiquidMetalEffect: React.FC = () => {
                   step="0.001"
                   value={params.patternBlur}
                   onChange={(e) => handleParamChange('patternBlur', parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
                   className="flex-grow"
                 />
                 <input
                   type="text"
-                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  className="w-20 text-base bg-gray-800 border border-gray-700 rounded px-2 py-2 text-white"
                   value={params.patternBlur}
                   onChange={(e) => handleInputChange('patternBlur', e.target.value)}
+                  inputMode="decimal"
                 />
               </div>
             </div>
@@ -460,13 +469,16 @@ const LiquidMetalEffect: React.FC = () => {
                   step="0.01"
                   value={params.liquid}
                   onChange={(e) => handleParamChange('liquid', parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
                   className="flex-grow"
                 />
                 <input
                   type="text"
-                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  className="w-20 text-base bg-gray-800 border border-gray-700 rounded px-2 py-2 text-white"
                   value={params.liquid}
                   onChange={(e) => handleInputChange('liquid', e.target.value)}
+                  inputMode="decimal"
                 />
               </div>
             </div>
@@ -481,13 +493,16 @@ const LiquidMetalEffect: React.FC = () => {
                   step="0.01"
                   value={params.speed}
                   onChange={(e) => handleParamChange('speed', parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
                   className="flex-grow"
                 />
                 <input
                   type="text"
-                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  className="w-20 text-base bg-gray-800 border border-gray-700 rounded px-2 py-2 text-white"
                   value={params.speed}
                   onChange={(e) => handleInputChange('speed', e.target.value)}
+                  inputMode="decimal"
                 />
               </div>
             </div>
@@ -502,13 +517,16 @@ const LiquidMetalEffect: React.FC = () => {
                   step="0.1"
                   value={params.patternScale}
                   onChange={(e) => handleParamChange('patternScale', parseFloat(e.target.value))}
+                  onTouchStart={(e) => e.stopPropagation()}
+                  onTouchMove={(e) => e.stopPropagation()}
                   className="flex-grow"
                 />
                 <input
                   type="text"
-                  className="w-16 text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
+                  className="w-20 text-base bg-gray-800 border border-gray-700 rounded px-2 py-2 text-white"
                   value={params.patternScale}
                   onChange={(e) => handleInputChange('patternScale', e.target.value)}
+                  inputMode="decimal"
                 />
               </div>
             </div>
